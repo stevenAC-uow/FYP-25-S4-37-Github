@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduQuest - Student Profile</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --font-family: "Nunito", sans-serif;
+      }
+      body {
+        font-family: var(--font-family);
+        -webkit-font-smoothing: antialiased;
+        background-color: #fafaf9;
+      }
+
+      .bg-pastel-mesh {
+        position: fixed;
+        inset: 0;
+        z-index: -50;
+        background: radial-gradient(
+            at 0% 0%,
+            rgba(224, 231, 255, 0.5) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 0%,
+            rgba(255, 237, 213, 0.4) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(220, 252, 231, 0.4) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 0% 100%,
+            rgba(255, 228, 230, 0.4) 0px,
+            transparent 50%
+          );
+        filter: blur(60px);
+      }
+      /* Micro pattern for texture */
+      .bg-texture {
+        position: fixed;
+        inset: 0;
+        z-index: -49;
+        opacity: 0.3;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2394a3b8' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+      }
+      @keyframes slide-up {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-enter {
+        animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      .animate-float {
+        animation: float 5s ease-in-out infinite;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+      /* Progress Bar Stripe Animation */
+      @keyframes progress-stripe {
+        from {
+          background-position: 1rem 0;
+        }
+        to {
+          background-position: 0 0;
+        }
+      }
+      .animate-stripe {
+        background-size: 1rem 1rem;
+        animation: progress-stripe 1s linear infinite;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-geist"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-geist">
+      .font-geist {
+        font-family: "Geist", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-roboto"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-roboto">
+      .font-roboto {
+        font-family: "Roboto", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-montserrat"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-montserrat">
+      .font-montserrat {
+        font-family: "Montserrat", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-poppins"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-poppins">
+      .font-poppins {
+        font-family: "Poppins", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-playfair"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-playfair">
+      .font-playfair {
+        font-family: "Playfair Display", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-instrument-serif"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-instrument-serif">
+      .font-instrument-serif {
+        font-family: "Instrument Serif", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-merriweather"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-merriweather">
+      .font-merriweather {
+        font-family: "Merriweather", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-bricolage"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-bricolage">
+      .font-bricolage {
+        font-family: "Bricolage Grotesque", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-jakarta"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-jakarta">
+      .font-jakarta {
+        font-family: "Plus Jakarta Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-manrope"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-manrope">
+      .font-manrope {
+        font-family: "Manrope", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-space-grotesk"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-space-grotesk">
+      .font-space-grotesk {
+        font-family: "Space Grotesk", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-work-sans"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-work-sans">
+      .font-work-sans {
+        font-family: "Work Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-pt-serif"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-pt-serif">
+      .font-pt-serif {
+        font-family: "PT Serif", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-geist-mono"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-geist-mono">
+      .font-geist-mono {
+        font-family: "Geist Mono", monospace !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-space-mono"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-space-mono">
+      .font-space-mono {
+        font-family: "Space Mono", monospace !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-quicksand"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-quicksand">
+      .font-quicksand {
+        font-family: "Quicksand", sans-serif !important;
+      }
+    </style>
+  </head>
+  <body
+    class="text-slate-600 selection:bg-indigo-100 selection:text-indigo-800 pb-12"
+  >
+    <div class="bg-pastel-mesh"></div>
+    <div class="bg-texture"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 pt-4 pb-2 px-4">
+      <div
+        class="max-w-7xl mx-auto glass-card rounded-full px-4 py-3 flex items-center justify-between shadow-sm shadow-indigo-100/50"
+      >
+        <!-- Brand -->
+        <div class="flex items-center gap-3 pl-2">
+          <div
+            class="w-9 h-9 rounded-xl bg-indigo-500 text-white flex items-center justify-center shadow-lg shadow-indigo-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-compass w-5 h-5 stroke-[1.5]"
+            >
+              <path
+                d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"
+              ></path>
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </div>
+          <span
+            class="text-lg font-bold tracking-tight text-slate-700 hidden sm:block"
+            >EduQuest</span
+          >
+        </div>
+
+        <!-- Links -->
+        <div
+          class="hidden md:flex items-center gap-1 p-1 bg-slate-100/50 rounded-full border border-slate-200/50"
+        >
+          <a
+            href="#"
+            class="px-5 py-2 rounded-full text-slate-500 hover:text-indigo-500 hover:bg-white/60 font-semibold text-sm transition-all"
+            >Home</a
+          >
+          <a
+            href="student-class.html"
+            class="hover:text-indigo-500 hover:bg-white/60 transition-all text-sm font-semibold text-slate-500 rounded-full pt-2 pr-5 pb-2 pl-5"
+            >My Classes</a
+          >
+          <a
+            href="student-shop.html"
+            class="hover:text-indigo-500 hover:bg-white/60 transition-all text-sm font-semibold text-slate-500 rounded-full pt-2 pr-5 pb-2 pl-5"
+            >Shop</a
+          >
+
+          <a
+            href="#"
+            class="hover:text-indigo-500 hover:bg-white/60 transition-all text-sm font-semibold text-slate-500 rounded-full pt-2 pr-5 pb-2 pl-5"
+            >Feedback</a
+          >
+        </div>
+
+        <!-- Profile -->
+        <div class="flex items-center gap-4 pr-2">
+          <button
+            class="relative p-2 text-slate-400 hover:text-indigo-500 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-bell"
+            >
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+            </svg>
+            <span
+              class="absolute top-2 right-2.5 w-2 h-2 bg-rose-500 rounded-full border border-white"
+            ></span>
+          </button>
+          <div class="hidden sm:flex flex-col items-end">
+            <span class="text-xs font-bold text-slate-700">Alex Explorer</span>
+            <span
+              class="text-[10px] font-bold text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-full"
+              >Lvl 12</span
+            >
+          </div>
+          <div
+            class="w-10 h-10 rounded-full p-0.5 border-2 border-indigo-100 bg-white relative cursor-pointer ring-2 ring-transparent hover:ring-indigo-100 transition-all"
+          >
+            <img
+              src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex&amp;backgroundColor=e0e7ff"
+              alt="Profile"
+              class="w-full h-full object-cover rounded-full"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT - STUDENT PROFILE -->
+    <main class="max-w-7xl mx-auto pt-28 pb-12 px-6">
+      <!-- TOP HERO: PROFILE OVERVIEW -->
+      <section
+        class="relative w-full rounded-[2.5rem] bg-white border border-white shadow-xl shadow-indigo-100/30 overflow-hidden mb-8 animate-enter group"
+      >
+        <!-- Background Elements -->
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-violet-50/50 via-white to-sky-50/50 opacity-80"
+        ></div>
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-indigo-100/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
+        ></div>
+        <div
+          class="absolute bottom-0 left-0 w-64 h-64 bg-amber-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"
+        ></div>
+
+        <!-- Content -->
+        <div
+          class="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center md:items-start gap-8"
+        >
+          <!-- Left: Avatar & Main Info -->
+          <div
+            class="flex flex-col md:flex-row items-center md:items-start gap-6 flex-1 text-center md:text-left"
+          >
+            <div class="relative">
+              <!-- Glow -->
+              <div
+                class="absolute inset-0 bg-indigo-400 blur-xl opacity-20 rounded-full"
+              ></div>
+              <!-- Avatar -->
+              <div
+                class="relative w-24 h-24 rounded-full p-1 bg-white border-2 border-indigo-50 shadow-lg"
+              >
+                <img
+                  src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex&amp;backgroundColor=e0e7ff"
+                  class="w-full h-full rounded-full object-cover"
+                />
+              </div>
+              <!-- Edit Button -->
+              <button
+                class="absolute bottom-0 right-0 p-1.5 bg-white border border-slate-100 text-slate-400 hover:text-indigo-600 rounded-full shadow-sm hover:shadow-md transition-all"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-camera"
+                >
+                  <path
+                    d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
+                  ></path>
+                  <circle cx="12" cy="13" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+
+            <div class="pt-1">
+              <div
+                class="flex items-center justify-center md:justify-start gap-2 mb-1"
+              >
+                <h1
+                  class="text-3xl font-extrabold text-slate-800 tracking-tight"
+                >
+                  Alex Explorer
+                </h1>
+                <span
+                  class="bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 border border-amber-200 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider"
+                  >Star Explorer</span
+                >
+              </div>
+              <p class="text-sm font-semibold text-slate-500 mb-2">
+                Level 12 • Starfleet Academy • Class 3A
+              </p>
+              <p class="text-sm text-slate-400 font-medium italic">
+                "Learning streak defender since 2024. 🚀"
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Quick Stats -->
+          <div
+            class="flex items-center gap-4 bg-white/60 backdrop-blur-sm p-2 rounded-2xl border border-white shadow-sm"
+          >
+            <!-- Stat 1 -->
+            <div
+              class="px-4 py-2 text-center border-r border-slate-100 last:border-0"
+            >
+              <div
+                class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"
+              >
+                Total XP
+              </div>
+              <div class="text-xl font-black text-indigo-600">12,450</div>
+            </div>
+            <!-- Stat 2 -->
+            <div
+              class="px-4 py-2 text-center border-r border-slate-100 last:border-0"
+            >
+              <div
+                class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"
+              >
+                Streak
+              </div>
+              <div
+                class="flex items-center justify-center gap-1 text-xl font-black text-amber-500"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  stroke="none"
+                  class="animate-pulse"
+                >
+                  <path
+                    d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"
+                  ></path>
+                </svg>
+                7
+              </div>
+            </div>
+            <!-- Stat 3 -->
+            <div class="px-4 py-2 text-center">
+              <div
+                class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"
+              >
+                Completed
+              </div>
+              <div class="text-xl font-black text-emerald-500">42</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYOUT GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- LEFT COLUMN: NAVIGATION & QUICK LINKS -->
+        <aside
+          class="lg:col-span-3 space-y-6 lg:sticky lg:top-28 animate-enter"
+          style="animation-delay: 100ms"
+        >
+          <!-- Navigation Tabs -->
+          <div
+            class="bg-white rounded-[1.5rem] border border-slate-100 shadow-lg shadow-indigo-100/40 p-2 overflow-hidden"
+          >
+            <nav class="space-y-1">
+              <a
+                href="#details"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-50 text-indigo-700 font-bold text-sm shadow-sm transition-all"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-user"
+                >
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Personal Details
+              </a>
+
+              <a
+                href="#stats"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-indigo-600 font-bold text-sm transition-all"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-bar-chart-2"
+                >
+                  <line x1="18" x2="18" y1="20" y2="10"></line>
+                  <line x1="12" x2="12" y1="20" y2="4"></line>
+                  <line x1="6" x2="6" y1="20" y2="14"></line>
+                </svg>
+                Stats &amp; Progress
+              </a>
+              <a
+                href="#reports"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-indigo-600 font-bold text-sm transition-all"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-file-text"
+                >
+                  <path
+                    d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                  ></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Reports
+              </a>
+            </nav>
+          </div>
+
+          <!-- Quick Links Card -->
+          <div
+            class="bg-white/60 backdrop-blur-sm rounded-3xl border border-white/60 p-5 shadow-sm"
+          >
+            <h3
+              class="text-xs font-extrabold text-slate-400 uppercase tracking-wider mb-4 px-1"
+            >
+              Shortcuts
+            </h3>
+            <div class="space-y-2">
+              <button
+                class="w-full flex items-center justify-between p-3 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md hover:-translate-y-0.5 transition-all group"
+              >
+                <span
+                  class="text-xs font-bold text-slate-600 group-hover:text-indigo-600"
+                  >Inventory</span
+                >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-backpack text-slate-400 group-hover:text-indigo-500"
+                >
+                  <path
+                    d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"
+                  ></path>
+                  <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
+                  <path d="M8 21v-5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v5"></path>
+                  <path d="M8 10h8"></path>
+                  <path d="M9 18h6"></path>
+                </svg>
+              </button>
+              <button
+                class="w-full flex items-center justify-between p-3 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md hover:-translate-y-0.5 transition-all group"
+              >
+                <span
+                  class="group-hover:text-indigo-600 text-xs font-bold text-slate-600"
+                  style=""
+                  >Class</span
+                >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-swords text-slate-400 group-hover:text-indigo-500"
+                >
+                  <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline>
+                  <line x1="13" x2="19" y1="19" y2="13"></line>
+                  <line x1="16" x2="20" y1="16" y2="20"></line>
+                  <line x1="19" x2="21" y1="21" y2="19"></line>
+                  <polyline
+                    points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"
+                  ></polyline>
+                  <line x1="5" x2="9" y1="14" y2="18"></line>
+                  <line x1="7" x2="4" y1="17" y2="20"></line>
+                  <line x1="3" x2="5" y1="19" y2="21"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- RIGHT COLUMN: CONTENT SECTIONS -->
+        <div
+          class="lg:col-span-9 space-y-8 animate-enter"
+          style="animation-delay: 200ms"
+        >
+          <!-- SECTION 1: PERSONAL DETAILS -->
+          <section
+            id="details"
+            class="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-indigo-100/20 p-8 scroll-mt-32 relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-[4rem] -z-0"
+            ></div>
+
+            <div class="relative z-10">
+              <div class="flex items-center justify-between mb-6">
+                <h2
+                  class="text-xl font-extrabold text-slate-800 flex items-center gap-2"
+                >
+                  <span
+                    class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-user"
+                    >
+                      <path
+                        d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+                      ></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </span>
+                  Personal Details
+                </h2>
+                <span
+                  class="text-[10px] font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-md border border-slate-100"
+                  >🔒 Account Email cannot be changed</span
+                >
+              </div>
+
+              <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <div class="space-y-1.5">
+                  <label
+                    class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1"
+                    >Full Name</label
+                  >
+                  <input
+                    type="text"
+                    value="Alexander Hamilton"
+                    class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 focus:bg-white transition-all placeholder:text-slate-300"
+                  />
+                </div>
+
+                <!-- Display Name -->
+                <div class="space-y-1.5">
+                  <label
+                    class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1"
+                    >Display Name</label
+                  >
+                  <input
+                    type="text"
+                    value="Alex Explorer"
+                    class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 focus:bg-white transition-all placeholder:text-slate-300"
+                  />
+                </div>
+
+                <!-- Email (Read Only) -->
+                <div class="space-y-1.5 opacity-70">
+                  <label
+                    class="text-xs font-bold text-slate-400 uppercase tracking-wide ml-1"
+                    >Email Address</label
+                  >
+                  <div class="relative">
+                    <input
+                      type="email"
+                      value="alex.h@student.eduquest.com"
+                      readonly=""
+                      class="w-full px-4 py-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm cursor-not-allowed"
+                    />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-lock absolute right-4 top-3.5 text-slate-400"
+                    >
+                      <rect
+                        width="18"
+                        height="11"
+                        x="3"
+                        y="11"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Institution (Read Only) -->
+                <div class="space-y-1.5 opacity-70">
+                  <label
+                    class="text-xs font-bold text-slate-400 uppercase tracking-wide ml-1"
+                    >Institution</label
+                  >
+                  <div class="relative">
+                    <input
+                      type="text"
+                      value="Starfleet Academy"
+                      readonly=""
+                      class="w-full px-4 py-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm cursor-not-allowed"
+                    />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-building-2 absolute right-4 top-3.5 text-slate-400"
+                    >
+                      <path
+                        d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"
+                      ></path>
+                      <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
+                      <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path>
+                      <path d="M10 6h4"></path>
+                      <path d="M10 10h4"></path>
+                      <path d="M10 14h4"></path>
+                      <path d="M10 18h4"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Class/Grade -->
+                <div class="space-y-1.5">
+                  <label
+                    class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1"
+                    >Class / Grade</label
+                  >
+                  <select
+                    class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 focus:bg-white transition-all"
+                  >
+                    <option>Class 3A</option>
+                    <option>Class 3B</option>
+                    <option>Class 3C</option>
+                  </select>
+                </div>
+
+                <!-- Timezone -->
+                <div class="space-y-1.5">
+                  <label
+                    class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1"
+                    >Timezone</label
+                  >
+                  <select
+                    class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 focus:bg-white transition-all"
+                  >
+                    <option>(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                    <option>(GMT-08:00) Pacific Time</option>
+                    <option>(GMT+00:00) London</option>
+                  </select>
+                </div>
+
+                <!-- Save Button -->
+                <div
+                  class="md:col-span-2 flex justify-end pt-4 border-t border-slate-50 mt-2"
+                >
+                  <button
+                    type="button"
+                    class="px-8 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:scale-[1.02] active:scale-95 transition-all"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- SECTION 2: SUBSCRIPTION -->
+          <section id="subscription" class="scroll-mt-32"></section>
+
+          <!-- SECTION 3: STATS & PROGRESS -->
+          <section id="stats" class="scroll-mt-32">
+            <div
+              class="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-indigo-100/20 p-8"
+            >
+              <div class="flex items-center justify-between mb-8">
+                <h2
+                  class="text-xl font-extrabold text-slate-800 flex items-center gap-2"
+                >
+                  <span
+                    class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-bar-chart-2"
+                    >
+                      <line x1="18" x2="18" y1="20" y2="10"></line>
+                      <line x1="12" x2="12" y1="20" y2="4"></line>
+                      <line x1="6" x2="6" y1="20" y2="14"></line>
+                    </svg>
+                  </span>
+                  Stats &amp; Progress
+                </h2>
+              </div>
+
+              <!-- Level & XP Bar -->
+              <div
+                class="mb-8 bg-gradient-to-br from-indigo-50 via-white to-white rounded-2xl p-6 border border-indigo-50"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-2xl font-black text-slate-800"
+                      >Level 12</span
+                    >
+                    <span
+                      class="text-xs font-bold text-slate-400 uppercase tracking-wide"
+                      >Elite Scholar</span
+                    >
+                  </div>
+                  <span class="text-sm font-bold text-indigo-600"
+                    >2,450 / 3,000 XP</span
+                  >
+                </div>
+                <!-- XP Bar -->
+                <div
+                  class="h-4 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner"
+                >
+                  <div
+                    class="h-full w-[82%] bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full shadow-sm relative animate-stripe"
+                    style="
+                      background-image: linear-gradient(
+                        45deg,
+                        rgba(255, 255, 255, 0.15) 25%,
+                        transparent 25%,
+                        transparent 50%,
+                        rgba(255, 255, 255, 0.15) 50%,
+                        rgba(255, 255, 255, 0.15) 75%,
+                        transparent 75%,
+                        transparent
+                      );
+                      background-size: 1rem 1rem;
+                    "
+                  ></div>
+                </div>
+                <p class="text-[11px] font-bold text-slate-400 mt-2 text-right">
+                  550 XP to Level 13
+                </p>
+              </div>
+
+              <!-- Stats Grid -->
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Streak -->
+                <div
+                  class="bg-amber-50 rounded-2xl p-4 border border-amber-100 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform"
+                >
+                  <div
+                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-amber-500 shadow-sm mb-2"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      stroke="none"
+                    >
+                      <path
+                        d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <span class="text-2xl font-black text-slate-800">7</span>
+                  <span class="text-[10px] font-bold text-amber-600 uppercase"
+                    >Day Streak</span
+                  >
+                </div>
+
+                <!-- Avg Score -->
+                <div
+                  class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform"
+                >
+                  <div
+                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-emerald-500 shadow-sm mb-2"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-percent"
+                    >
+                      <line x1="19" x2="5" y1="5" y2="19"></line>
+                      <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                      <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                    </svg>
+                  </div>
+                  <span class="text-2xl font-black text-slate-800">92%</span>
+                  <span class="text-[10px] font-bold text-emerald-600 uppercase"
+                    >Avg Score</span
+                  >
+                </div>
+
+                <!-- Quizzes -->
+                <div
+                  class="bg-sky-50 rounded-2xl p-4 border border-sky-100 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform"
+                >
+                  <div
+                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-sky-500 shadow-sm mb-2"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-check-circle-2"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                  </div>
+                  <span class="text-2xl font-black text-slate-800">42</span>
+                  <span class="text-[10px] font-bold text-sky-600 uppercase"
+                    >Quizzes Done</span
+                  >
+                </div>
+
+                <!-- Classes -->
+                <div
+                  class="bg-purple-50 rounded-2xl p-4 border border-purple-100 flex flex-col items-center justify-center text-center hover:scale-[1.02] transition-transform"
+                >
+                  <div
+                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-purple-500 shadow-sm mb-2"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-book-open"
+                    >
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                      <path
+                        d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <span class="text-2xl font-black text-slate-800">4</span>
+                  <span class="text-[10px] font-bold text-purple-600 uppercase"
+                    >Active Classes</span
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECTION 4: REPORTS -->
+          <section id="reports" class="scroll-mt-32">
+            <div
+              class="bg-white rounded-[2rem] border border-slate-100 shadow-xl shadow-indigo-100/20 p-8"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <h2
+                  class="text-xl font-extrabold text-slate-800 flex items-center gap-2"
+                >
+                  <span
+                    class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-file-text"
+                    >
+                      <path
+                        d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </span>
+                  Reports &amp; History
+                </h2>
+                <button
+                  class="text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors"
+                >
+                  View All
+                </button>
+              </div>
+
+              <div class="space-y-3">
+                <!-- Report Item 1 -->
+                <div
+                  class="group flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl border border-slate-100 bg-white hover:border-indigo-100 hover:shadow-md hover:shadow-indigo-50 transition-all"
+                >
+                  <div class="flex items-start gap-4 mb-3 md:mb-0">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-file"
+                      >
+                        <path
+                          d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                        ></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-bold text-slate-700">
+                        Term 2 Progress Report
+                      </h4>
+                      <p class="text-xs text-slate-400 font-medium">
+                        Generated Oct 24, 2023 • Class 3A
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 pl-14 md:pl-0">
+                    <button
+                      class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-100 transition-colors"
+                    >
+                      View
+                    </button>
+                    <button
+                      class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-colors flex items-center gap-1.5"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-download"
+                      >
+                        <path
+                          d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                        ></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" x2="12" y1="15" y2="3"></line>
+                      </svg>
+                      Download
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Report Item 2 -->
+                <div
+                  class="group flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl border border-slate-100 bg-white hover:border-indigo-100 hover:shadow-md hover:shadow-indigo-50 transition-all"
+                >
+                  <div class="flex items-start gap-4 mb-3 md:mb-0">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-file"
+                      >
+                        <path
+                          d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                        ></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-bold text-slate-700">
+                        Intro to Science - Quiz Results
+                      </h4>
+                      <p class="text-xs text-slate-400 font-medium">
+                        Generated Sep 15, 2023 • Science 101
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 pl-14 md:pl-0">
+                    <button
+                      class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-100 transition-colors"
+                    >
+                      View
+                    </button>
+                    <button
+                      class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-colors flex items-center gap-1.5"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-download"
+                      >
+                        <path
+                          d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                        ></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" x2="12" y1="15" y2="3"></line>
+                      </svg>
+                      Download
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Report Item 3 -->
+                <div
+                  class="group flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl border border-slate-100 bg-white hover:border-indigo-100 hover:shadow-md hover:shadow-indigo-50 transition-all"
+                >
+                  <div class="flex items-start gap-4 mb-3 md:mb-0">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-file"
+                      >
+                        <path
+                          d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                        ></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                      </svg>
+                    </div>
+                    <div class="">
+                      <h4 class="text-sm font-bold text-slate-700">
+                        Annual Activity Summary
+                      </h4>
+                      <p class="text-xs text-slate-400 font-medium">
+                        Generated Jun 30, 2023 • All Classes
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 pl-14 md:pl-0">
+                    <button
+                      class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 border border-slate-100 transition-colors"
+                    >
+                      View
+                    </button>
+                    <button
+                      class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-colors flex items-center gap-1.5"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-download"
+                      >
+                        <path
+                          d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                        ></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" x2="12" y1="15" y2="3"></line>
+                      </svg>
+                      Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2">
+              <div
+                class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-compass w-5 h-5"
+                >
+                  <path
+                    d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"
+                  ></path>
+                  <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+              </div>
+              <span class="text-lg font-bold text-white tracking-tight"
+                >EduQuest</span
+              >
+            </div>
+            <p
+              class="text-xs leading-relaxed text-slate-400 font-medium max-w-xs"
+            >
+              Making learning an addictive adventure for students around the
+              world.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold text-white mb-4 text-sm">Product</h4>
+            <ul class="space-y-2 text-xs font-medium text-slate-400">
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Features</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Pricing</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white mb-4 text-sm">Resources</h4>
+            <ul class="space-y-2 text-xs font-medium text-slate-400">
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Help Center</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Community</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white mb-4 text-sm">Legal</h4>
+            <ul class="space-y-2 text-xs font-medium text-slate-400">
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Privacy</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-indigo-400 transition-colors"
+                  >Terms</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-slate-800 pt-6 flex justify-center">
+          <p class="text-xs font-medium text-slate-500">
+            © 2024 EduQuest. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
