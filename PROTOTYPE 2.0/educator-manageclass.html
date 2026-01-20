@@ -1,0 +1,2416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduQuest - Class Hub</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --font-body: "Nunito", sans-serif;
+        --font-heading: "Plus Jakarta Sans", sans-serif;
+      }
+      body {
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        background-color: #f8fafc;
+        overflow-x: hidden;
+      }
+      /* ANIMATED BACKGROUND */
+      .cinematic-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -50;
+        background:
+          radial-gradient(
+            circle at 15% 15%,
+            rgba(224, 231, 255, 0.4) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 85% 10%,
+            rgba(255, 228, 230, 0.4) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(240, 249, 255, 0.5) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 90%,
+            rgba(220, 252, 231, 0.3) 0%,
+            transparent 40%
+          );
+        background-size: 150% 150%;
+        animation: breathe 15s ease-in-out infinite alternate;
+      }
+      .cinematic-grid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -49;
+        background-image: radial-gradient(#6366f1 0.7px, transparent 0.7px);
+        background-size: 24px 24px;
+        opacity: 0.08;
+        mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+      }
+      /* GLASSMORPHISM UTILITIES */
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow:
+          0 4px 20px -2px rgba(99, 102, 241, 0.05),
+          0 10px 40px -10px rgba(99, 102, 241, 0.05);
+      }
+      .glass-card-hover {
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .glass-card-hover:hover {
+        transform: translateY(-4px) scale(1.005);
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 0 12px 30px -5px rgba(99, 102, 241, 0.1);
+        border-color: rgba(255, 255, 255, 1);
+      }
+      /* KEYFRAMES */
+      @keyframes breathe {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.05);
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes wiggle {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-3deg);
+        }
+        75% {
+          transform: rotate(3deg);
+        }
+      }
+      @keyframes slide-up-fade {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes progress-fill {
+        from {
+          stroke-dashoffset: 283;
+        }
+        to {
+          stroke-dashoffset: 70;
+        } /* 75% fill */
+      }
+      /* UTILITY CLASSES */
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+      .animate-float-delayed {
+        animation: float 8s ease-in-out 1s infinite;
+      }
+      .animate-enter {
+        animation: slide-up-fade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        opacity: 0;
+      }
+      .delay-100 {
+        animation-delay: 100ms;
+      }
+      .delay-200 {
+        animation-delay: 200ms;
+      }
+      .delay-300 {
+        animation-delay: 300ms;
+      }
+      .font-heading {
+        font-family: var(--font-heading);
+      }
+      /* Toggle Switch */
+      .toggle-checkbox:checked {
+        right: 0;
+        border-color: #6366f1;
+      }
+      .toggle-checkbox:checked + .toggle-label {
+        background-color: #6366f1;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.5);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.8);
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-geist"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-geist">
+      .font-geist {
+        font-family: "Geist", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-roboto"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-roboto">
+      .font-roboto {
+        font-family: "Roboto", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-montserrat"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-montserrat">
+      .font-montserrat {
+        font-family: "Montserrat", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-poppins"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-poppins">
+      .font-poppins {
+        font-family: "Poppins", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-playfair"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-playfair">
+      .font-playfair {
+        font-family: "Playfair Display", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-instrument-serif"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-instrument-serif">
+      .font-instrument-serif {
+        font-family: "Instrument Serif", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-merriweather"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-merriweather">
+      .font-merriweather {
+        font-family: "Merriweather", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-bricolage"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-bricolage">
+      .font-bricolage {
+        font-family: "Bricolage Grotesque", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-jakarta"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-jakarta">
+      .font-jakarta {
+        font-family: "Plus Jakarta Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-manrope"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-manrope">
+      .font-manrope {
+        font-family: "Manrope", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-space-grotesk"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-space-grotesk">
+      .font-space-grotesk {
+        font-family: "Space Grotesk", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-work-sans"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-work-sans">
+      .font-work-sans {
+        font-family: "Work Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-pt-serif"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-pt-serif">
+      .font-pt-serif {
+        font-family: "PT Serif", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-geist-mono"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-geist-mono">
+      .font-geist-mono {
+        font-family: "Geist Mono", monospace !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-space-mono"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-space-mono">
+      .font-space-mono {
+        font-family: "Space Mono", monospace !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-quicksand"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-quicksand">
+      .font-quicksand {
+        font-family: "Quicksand", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-newsreader"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..800&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-newsreader">
+      .font-newsreader {
+        font-family: "Newsreader", serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-google-sans-flex"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-google-sans-flex">
+      .font-google-sans-flex {
+        font-family: "Google Sans Flex", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-oswald"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-oswald">
+      .font-oswald {
+        font-family: "Oswald", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-dm-sans"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-dm-sans">
+      .font-dm-sans {
+        font-family: "DM Sans", sans-serif !important;
+      }
+    </style>
+    <link
+      id="all-fonts-link-font-cormorant"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;display=swap"
+    />
+    <style id="all-fonts-style-font-cormorant">
+      .font-cormorant {
+        font-family: "Cormorant Garamond", serif !important;
+      }
+    </style>
+    <style>
+      /* 3D Transform utilities */
+      .perspective-normal {
+        perspective: 500px !important;
+      }
+    </style>
+    <script>
+      // Configure Tailwind to include our custom 3D transform utilities
+      tailwind.config = {
+        theme: {
+          extend: {
+            // Add any custom theme extensions here if needed
+          },
+        },
+        plugins: [
+          function ({ addUtilities }) {
+            const rotateXUtilities = {};
+            const rotateYUtilities = {};
+            const rotateZUtilities = {};
+            const rotateValues = [0, 5, 10, 15, 20, 30, 45, 75];
+            // Generate rotate-x utilities
+            rotateValues.forEach((value) => {
+              rotateXUtilities[`.rotate-x-${value}`] = {
+                "--tw-rotate-x": `${value}deg`,
+                transform: `
+translate3d(var(--tw-translate-x, 0), var(--tw-translate-y, 0), var(--tw-translate-z, 0))
+rotateX(var(--tw-rotate-x, 0))
+rotateY(var(--tw-rotate-y, 0))
+rotateZ(var(--tw-rotate-z, 0))
+skewX(var(--tw-skew-x, 0))
+skewY(var(--tw-skew-y, 0))
+scaleX(var(--tw-scale-x, 1))
+scaleY(var(--tw-scale-y, 1))
+`
+                  .replace(/\\s+/g, " ")
+                  .trim(),
+              };
+              if (value !== 0) {
+                rotateXUtilities[`.-rotate-x-${value}`] = {
+                  "--tw-rotate-x": `-${value}deg`,
+                  transform: `
+translate3d(var(--tw-translate-x, 0), var(--tw-translate-y, 0), var(--tw-translate-z, 0))
+rotateX(var(--tw-rotate-x, 0))
+rotateY(var(--tw-rotate-y, 0))
+rotateZ(var(--tw-rotate-z, 0))
+skewX(var(--tw-skew-x, 0))
+skewY(var(--tw-skew-y, 0))
+scaleX(var(--tw-scale-x, 1))
+scaleY(var(--tw-scale-y, 1))
+`
+                    .replace(/\\s+/g, " ")
+                    .trim(),
+                };
+              }
+            });
+            // Generate rotate-y utilities
+            rotateValues.forEach((value) => {
+              rotateYUtilities[`.rotate-y-${value}`] = {
+                "--tw-rotate-y": `${value}deg`,
+                transform: `
+translate3d(var(--tw-translate-x, 0), var(--tw-translate-y, 0), var(--tw-translate-z, 0))
+rotateX(var(--tw-rotate-x, 0))
+rotateY(var(--tw-rotate-y, 0))
+rotateZ(var(--tw-rotate-z, 0))
+skewX(var(--tw-skew-x, 0))
+skewY(var(--tw-skew-y, 0))
+scaleX(var(--tw-scale-x, 1))
+scaleY(var(--tw-scale-y, 1))
+`
+                  .replace(/\\s+/g, " ")
+                  .trim(),
+              };
+              if (value !== 0) {
+                rotateYUtilities[`.-rotate-y-${value}`] = {
+                  "--tw-rotate-y": `-${value}deg`,
+                  transform: `
+translate3d(var(--tw-translate-x, 0), var(--tw-translate-y, 0), var(--tw-translate-z, 0))
+rotateX(var(--tw-rotate-x, 0))
+rotateY(var(--tw-rotate-y, 0))
+rotateZ(var(--tw-rotate-z, 0))
+skewX(var(--tw-skew-x, 0))
+skewY(var(--tw-skew-y, 0))
+scaleX(var(--tw-scale-x, 1))
+scaleY(var(--tw-scale-y, 1))
+`
+                    .replace(/\\s+/g, " ")
+                    .trim(),
+                };
+              }
+            });
+            // Generate rotate-z utilities
+            rotateValues.forEach((value) => {
+              rotateZUtilities[`.rotate-z-${value}`] = {
+                "--tw-rotate-z": `${value}deg`,
+                transform: `
+translate3d(var(--tw-translate-x, 0), var(--tw-translate-y, 0), var(--tw-translate-z, 0))
+rotateX(var(--tw-rotate-x, 0))
+rotateY(var(--tw-rotate-y, 0))
+rotateZ(var(--tw-rotate-z, 0))
+skewX(var(--tw-skew-x, 0))
+skewY(var(--tw-skew-y, 0))
+scaleX(var(--tw-scale-x, 1))
+scaleY(var(--tw-scale-y, 1))
+`
+                  .replace(/\\s+/g, " ")
+                  .trim(),
+              };
+              if (value !== 0) {
+                rotateZUtilities[`.-rotate-z-${value}`] = {
+                  "--tw-rotate-z": `-${value}deg`,
+                  transform: `
+translate3d(var(--tw-translate-x, 0), var(--tw-translate-y, 0), var(--tw-translate-z, 0))
+rotateX(var(--tw-rotate-x, 0))
+rotateY(var(--tw-rotate-y, 0))
+rotateZ(var(--tw-rotate-z, 0))
+skewX(var(--tw-skew-x, 0))
+skewY(var(--tw-skew-y, 0))
+scaleX(var(--tw-scale-x, 1))
+scaleY(var(--tw-scale-y, 1))
+`
+                    .replace(/\\s+/g, " ")
+                    .trim(),
+                };
+              }
+            });
+            // Perspective utilities
+            const perspectiveUtilities = {
+              ".perspective-none": { perspective: "none" },
+              ".perspective-dramatic": { perspective: "100px" },
+              ".perspective-near": { perspective: "300px" },
+              ".perspective-normal": { perspective: "500px" },
+              ".perspective-midrange": { perspective: "800px" },
+              ".perspective-distant": { perspective: "1200px" },
+            };
+            // Transform style utilities
+            const transformStyleUtilities = {
+              ".transform-style-preserve-3d": {
+                "transform-style": "preserve-3d",
+              },
+              ".transform-style-flat": { "transform-style": "flat" },
+            };
+            addUtilities({
+              ...rotateXUtilities,
+              ...rotateYUtilities,
+              ...rotateZUtilities,
+              ...perspectiveUtilities,
+              ...transformStyleUtilities,
+            });
+          },
+        ],
+      };
+    </script>
+  </head>
+  <body
+    class="selection:bg-indigo-200 selection:text-indigo-900 pb-20 text-slate-600"
+  >
+    <!-- GLOBAL ATMOSPHERE -->
+    <div class="cinematic-bg"></div>
+    <div class="cinematic-grid"></div>
+
+    <!-- NAVIGATION (Maintained) -->
+    <nav
+      class="fixed top-0 w-full z-40 pt-4 pb-2 px-4 transition-all duration-300"
+    >
+      <div
+        class="max-w-7xl mx-auto glass-panel rounded-full px-4 py-3 flex items-center justify-between"
+      >
+        <!-- Brand -->
+        <div class="flex items-center gap-3 pl-2">
+          <div
+            class="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 bg-indigo-600 text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-compass w-5 h-5 stroke-[1.5]"
+            >
+              <path
+                d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"
+              ></path>
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </div>
+          <span
+            class="hidden sm:block text-lg font-bold tracking-tight font-heading text-slate-800"
+          >
+            EduQuest
+          </span>
+        </div>
+
+        <!-- Links (Educator Context) -->
+        <div
+          class="hidden md:flex items-center gap-1 p-1 rounded-full border bg-slate-100/50 border-slate-200/50"
+        >
+          <a
+            href="educator-dashboard.html"
+            class="transition-all hover:text-indigo-600 hover:bg-white/60 text-sm font-semibold text-slate-500 rounded-full pt-2 pr-5 pb-2 pl-5"
+          >
+            Dashboard
+          </a>
+          <a
+            href="educator-class.html"
+            class="transition-all text-sm font-bold text-indigo-600 bg-white border-slate-200/60 border rounded-full pt-2 pr-5 pb-2 pl-5 shadow-sm"
+          >
+            My Classes
+          </a>
+          <a
+            href="educator-reports.html"
+            class="transition-all hover:text-indigo-600 hover:bg-white/60 text-sm font-semibold text-slate-500 rounded-full pt-2 pr-5 pb-2 pl-5"
+          >
+            Reports
+          </a>
+        </div>
+
+        <!-- Profile -->
+        <div class="flex items-center gap-4 pr-2">
+          <button
+            class="relative p-2 hover:text-indigo-500 transition-colors text-slate-400"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-bell"
+            >
+              <path
+                d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"
+                class=""
+              ></path>
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+            </svg>
+            <span
+              class="absolute top-2 right-2.5 w-2 h-2 bg-rose-500 rounded-full border border-white"
+            ></span>
+          </button>
+          <div class="hidden sm:flex flex-col items-end">
+            <span class="text-xs font-bold font-heading text-slate-700">
+              Ms. Frizzle
+            </span>
+            <span
+              class="text-[10px] font-bold text-indigo-500 rounded-full pt-0.5 pr-2 pb-0.5 pl-2 bg-indigo-50"
+              style=""
+            >
+              Educator
+            </span>
+          </div>
+          <div
+            class="cursor-pointer transition-all hover:ring-indigo-100 bg-white w-10 h-10 border-indigo-100 border-2 ring-transparent ring-2 rounded-full pt-0.5 pr-0.5 pb-0.5 pl-0.5 relative"
+            onclick="window.location.href = 'educator-profile.html'"
+            role="button"
+          >
+            <img
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Frizzle&amp;backgroundColor=e0e7ff"
+              alt="Profile"
+              class="w-full h-full object-cover rounded-full"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto pt-28 px-6 relative z-10">
+      <!-- 2. HERO SECTION - CINEMATIC -->
+      <header class="mb-12 animate-enter">
+        <div class="relative w-full rounded-[2.5rem] overflow-hidden group">
+          <!-- Hero Background Layers -->
+          <div
+            class="absolute inset-0 bg-gradient-to-br opacity-90 from-indigo-50 via-white to-sky-50"
+          ></div>
+          <div
+            class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"
+          ></div>
+
+          <!-- Floating Orbs -->
+          <div
+            class="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br rounded-full blur-[80px] opacity-40 animate-float from-indigo-300 to-purple-200"
+          ></div>
+          <div
+            class="absolute -bottom-32 -left-20 w-80 h-80 bg-gradient-to-tr rounded-full blur-[60px] opacity-30 animate-float-delayed from-sky-300 to-teal-200"
+          ></div>
+
+          <!-- Floating 3D Elements (Icons) -->
+          <div
+            class="absolute top-10 right-[25%] opacity-20 transform rotate-12 animate-float pointer-events-none hidden lg:block text-indigo-900"
+          >
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="lucide lucide-star"
+            >
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+              ></polygon>
+            </svg>
+          </div>
+          <div
+            class="absolute bottom-10 left-[40%] opacity-20 transform -rotate-12 animate-float-delayed pointer-events-none hidden lg:block text-rose-400"
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="lucide lucide-heart"
+            >
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+              ></path>
+            </svg>
+          </div>
+
+          <!-- Content Container -->
+          <div
+            class="relative z-10 px-6 py-12 md:px-12 md:py-20 flex flex-col lg:flex-row items-center justify-between gap-12"
+          >
+            <!-- Left Content: Typography & Context -->
+            <div class="flex-1 space-y-8 max-w-2xl relative">
+              <!-- Badge -->
+              <div
+                class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-indigo-50/80 border border-indigo-100/50 backdrop-blur-md shadow-sm transition-transform hover:scale-105 cursor-default"
+              >
+                <span class="relative flex h-2 w-2">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"
+                  ></span>
+                  <span
+                    class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"
+                  ></span>
+                </span>
+                <span
+                  class="text-[11px] font-bold uppercase tracking-widest text-indigo-600 font-heading"
+                  >Math • Term 2</span
+                >
+              </div>
+
+              <!-- Headline -->
+              <div class="space-y-4">
+                <h1
+                  class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-heading leading-[1.1]"
+                >
+                  Class 3A
+                  <span
+                    class="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-500"
+                    >Space Explorers</span
+                  >
+                </h1>
+                <p
+                  class="text-lg text-slate-500 font-medium leading-relaxed max-w-lg"
+                >
+                  Your command center for geometry, fractions, and stellar
+                  arithmetic. Keep your cadets engaged and ready for liftoff.
+                </p>
+              </div>
+
+              <!-- Instructor & Status -->
+              <div class="flex flex-wrap items-center gap-6 pt-2">
+                <div
+                  class="flex items-center gap-3 pr-6 border-r border-slate-200"
+                >
+                  <img
+                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Frizzle&amp;backgroundColor=e0e7ff"
+                    alt="Ms. Frizzle"
+                    class="w-12 h-12 rounded-full border-2 border-white shadow-md bg-indigo-50"
+                  />
+                  <div>
+                    <p
+                      class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
+                    >
+                      Head Teacher
+                    </p>
+                    <p class="text-sm font-bold text-slate-700">Ms. Frizzle</p>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div class="flex -space-x-2">
+                    <img
+                      class="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+                      src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex"
+                      alt=""
+                    />
+                    <img
+                      class="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+                      src="https://api.dicebear.com/7.x/notionists/svg?seed=Maria"
+                      alt=""
+                    />
+                    <img
+                      class="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+                      src="https://api.dicebear.com/7.x/notionists/svg?seed=Sam"
+                      alt=""
+                    />
+                    <div
+                      class="w-8 h-8 rounded-full border-2 border-white shadow-sm bg-slate-50 flex items-center justify-center text-[10px] font-bold text-slate-500"
+                    >
+                      +21
+                    </div>
+                  </div>
+                  <p class="text-xs font-semibold text-slate-400 ml-1">
+                    Students Active
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Content: Interactive Mission Card -->
+            <div class="w-full max-w-md relative perspective-normal group">
+              <!-- Glow effect -->
+              <div
+                class="absolute inset-0 bg-gradient-to-tr from-indigo-200 via-purple-200 to-sky-200 rounded-[2rem] blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-700"
+              ></div>
+
+              <!-- Main Card -->
+              <div
+                class="relative bg-white/60 backdrop-blur-xl border border-white/60 rounded-[2rem] p-6 shadow-2xl shadow-indigo-900/5 transition-all duration-500 hover:-translate-y-1 hover:shadow-indigo-900/10"
+              >
+                <!-- Card Header -->
+                <div class="flex justify-between items-start mb-8">
+                  <div class="">
+                    <div class="flex items-center gap-2 mb-2">
+                      <span
+                        class="p-1.5 rounded-lg bg-emerald-100 text-emerald-600"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="lucide lucide-rocket"
+                        >
+                          <path
+                            d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"
+                          ></path>
+                          <path
+                            d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
+                          ></path>
+                          <path
+                            d="M9 12H4s.55-3.03 2-4c1.62-1.1 4-1 4-1"
+                          ></path>
+                          <path
+                            d="M12 15v5s3.03-.55 4-2c1.1-1.62 1-4 1-4"
+                          ></path>
+                        </svg>
+                      </span>
+                      <span
+                        class="uppercase text-xs font-bold text-emerald-600 tracking-wider"
+                        >Active Challenge</span
+                      >
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 tracking-tight">
+                      Daily Math Challenge
+                    </h3>
+                  </div>
+                  <!-- Radial Progress Widget -->
+                  <div
+                    class="relative w-14 h-14 flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-full h-full transform -rotate-90 text-indigo-100"
+                      viewBox="0 0 36 36"
+                    >
+                      <path
+                        class="text-slate-100"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                      ></path>
+                      <path
+                        class="text-indigo-500 drop-shadow-sm transition-all duration-1000 ease-out"
+                        stroke-dasharray="75, 100"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                      ></path>
+                    </svg>
+                    <span class="absolute text-xs font-extrabold text-slate-700"
+                      >75%</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                  <div
+                    class="p-3.5 rounded-2xl bg-white border border-slate-100 shadow-sm flex flex-col gap-1 hover:border-indigo-100 transition-colors group/stat"
+                  >
+                    <span
+                      class="text-[10px] font-bold text-slate-400 uppercase tracking-wide"
+                      >Avg Score</span
+                    >
+                    <span
+                      class="text-lg font-bold text-slate-700 group-hover/stat:text-indigo-600 transition-colors"
+                      >88%</span
+                    >
+                  </div>
+                  <div
+                    class="p-3.5 rounded-2xl bg-white border border-slate-100 shadow-sm flex flex-col gap-1 hover:border-indigo-100 transition-colors group/stat"
+                  >
+                    <span
+                      class="text-[10px] font-bold text-slate-400 uppercase tracking-wide"
+                      >Time Left</span
+                    >
+                    <span
+                      class="text-lg font-bold text-slate-700 group-hover/stat:text-indigo-600 transition-colors"
+                      >45m</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Action Button -->
+                <button
+                  class="w-full py-3 rounded-xl bg-slate-800 text-white font-bold text-sm shadow-lg shadow-slate-900/10 hover:bg-indigo-600 hover:shadow-indigo-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group/btn"
+                >
+                  <span class="">View Challenges</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-arrow-right group-hover/btn:translate-x-0.5 transition-transform"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Decorative Floating Elements -->
+              <div
+                class="absolute -right-4 -top-6 w-14 h-14 rounded-2xl bg-white/80 backdrop-blur border border-slate-100 shadow-xl flex items-center justify-center animate-float hidden md:flex hover:scale-110 transition-transform cursor-pointer"
+                title="Class Achievement"
+              >
+                <div class="text-center">
+                  <span class="block text-xl">🏆</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- 3. MAIN GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <!-- LEFT COLUMN (Wider) -->
+        <div class="lg:col-span-2 space-y-12">
+          <!-- 4. INSIGHTS STRIP - GLASS CARDS -->
+          <div
+            class="grid grid-cols-2 md:grid-cols-4 gap-5 animate-enter delay-100"
+          >
+            <!-- Stat 1 -->
+            <div
+              class="glass-panel rounded-2xl p-5 hover-lift flex flex-col gap-3 relative overflow-hidden group"
+            >
+              <div
+                class="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform duration-500"
+              ></div>
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center border bg-indigo-100/50 text-indigo-600 border-indigo-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-bar-chart-2 w-[18px] h-[18px]"
+                  style="color: rgb(79, 70, 229); width: 18px; height: 18px"
+                  data-icon-replaced="true"
+                >
+                  <line x1="18" x2="18" y1="20" y2="10" class=""></line>
+                  <line x1="12" x2="12" y1="20" y2="4" class=""></line>
+                  <line x1="6" x2="6" y1="20" y2="14"></line>
+                </svg>
+              </div>
+              <div class="">
+                <span
+                  class="block text-3xl font-heading font-extrabold text-slate-700"
+                >
+                  78%
+                </span>
+                <span
+                  class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                >
+                  Avg Quiz Score
+                </span>
+              </div>
+            </div>
+            <!-- Stat 2 -->
+            <div
+              class="glass-panel rounded-2xl p-5 hover-lift flex flex-col gap-3 relative overflow-hidden group"
+            >
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center border bg-emerald-100/50 text-emerald-600 border-emerald-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-check-circle-2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
+              </div>
+              <div>
+                <span
+                  class="block text-3xl font-heading font-extrabold text-slate-700"
+                >
+                  92%
+                </span>
+                <span
+                  class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                >
+                  Completion
+                </span>
+              </div>
+            </div>
+            <!-- Stat 3 -->
+            <div
+              class="glass-panel rounded-2xl p-5 hover-lift flex flex-col gap-3 relative overflow-hidden group"
+            >
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center border bg-amber-100/50 text-amber-600 border-amber-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-zap"
+                >
+                  <polygon
+                    points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                  ></polygon>
+                </svg>
+              </div>
+              <div class="">
+                <span
+                  class="block text-3xl font-heading font-extrabold text-slate-700"
+                >
+                  12.4k
+                </span>
+                <span
+                  class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                >
+                  Class XP
+                </span>
+              </div>
+            </div>
+            <!-- Stat 4 -->
+            <div
+              class="glass-panel rounded-2xl p-5 hover-lift flex flex-col gap-3 relative overflow-hidden group"
+            >
+              <div
+                class="w-10 h-10 rounded-full flex items-center justify-center border bg-rose-100/50 text-rose-600 border-rose-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-users"
+                >
+                  <path
+                    d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                    class=""
+                  ></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" class=""></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="">
+                <span
+                  class="block text-3xl font-heading font-extrabold text-slate-700"
+                >
+                  22
+                  <span class="text-lg font-bold text-slate-400">/24</span>
+                </span>
+                <span
+                  class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                >
+                  Active Now
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. QUIZZES SECTION -->
+          <section class="animate-enter delay-200">
+            <div class="flex mb-6 items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-lg bg-indigo-100 text-indigo-600">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-book-open"
+                  >
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                  </svg>
+                </div>
+                <h2 class="text-2xl font-heading font-bold text-slate-800">
+                  Quizzes
+                </h2>
+              </div>
+              <button
+                class="flex transition-all hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 hover:shadow-sm group text-xs font-bold text-slate-600 bg-white border-slate-200 border rounded-xl pt-2 pr-4 pb-2 pl-4 gap-x-2 gap-y-2 items-center"
+                onclick="window.location.href = 'educator-quiz.html'"
+                role="button"
+              >
+                View All
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-right group-hover:translate-x-0.5 transition-transform"
+                >
+                  <path d="M5 12h14" class=""></path>
+                  <path d="m12 5 7 7-7 7" class=""></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="space-y-5">
+              <!-- Quiz Card 1: Active -->
+              <div
+                class="glass-card-hover glass-panel rounded-2xl p-0 relative overflow-hidden group"
+              >
+                <!-- Gradient Sidebar -->
+                <div
+                  class="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b to-violet-500 from-indigo-400"
+                ></div>
+
+                <div
+                  class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6"
+                >
+                  <!-- Info -->
+                  <div class="flex-1 pl-2">
+                    <div class="flex items-center gap-3 mb-2">
+                      <h3 class="text-xl font-bold font-heading text-slate-800">
+                        Fractions &amp; Decimals
+                      </h3>
+                      <span
+                        class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wide border backdrop-blur-sm shadow-sm flex items-center gap-1 bg-emerald-100/80 text-emerald-700 border-emerald-200"
+                      >
+                        <span
+                          class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
+                        ></span>
+                        Published
+                      </span>
+                    </div>
+                    <p class="text-sm font-medium text-slate-500 mb-5 max-w-lg">
+                      Review of Week 5 material regarding converting fractions
+                      to decimals.
+                    </p>
+
+                    <!-- Rich Meta Tags -->
+                    <div
+                      class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-500"
+                    >
+                      <div
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg border bg-slate-100/50 border-slate-200/50"
+                      >
+                        <svg
+                          class="text-indigo-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                          <path d="M12 17h.01"></path>
+                        </svg>
+                        10 Qs
+                      </div>
+                      <div
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg border bg-rose-50/50 border-rose-100"
+                      >
+                        <svg
+                          class="text-rose-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"
+                          ></path>
+                          <path d="M16 2v4"></path>
+                          <path d="M8 2v4"></path>
+                          <path d="M3 10h5"></path>
+                          <path d="M17.5 17.5 16 16.25V14"></path>
+                          <path
+                            d="M22 16a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"
+                          ></path>
+                        </svg>
+                        Due Today, 5 PM
+                      </div>
+                      <div
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg border bg-emerald-50/50 border-emerald-100"
+                      >
+                        <svg
+                          class="text-emerald-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <polyline
+                            points="22 7 13.5 15.5 8.5 10.5 2 17"
+                          ></polyline>
+                          <polyline points="16 7 22 7 22 13"></polyline>
+                        </svg>
+                        Avg: 82%
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Actions -->
+                  <div class="flex gap-3 gap-x-3 gap-y-3 items-center">
+                    <button
+                      class="hover:shadow-md transition-all hover:text-indigo-600 hover:border-indigo-200 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                      onclick="window.location.href = 'educator-editquiz.html'"
+                      role="button"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-pencil"
+                      >
+                        <path
+                          d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                          class=""
+                        ></path>
+                        <path d="m15 5 4 4"></path>
+                      </svg>
+                    </button>
+                    <button
+                      class="transition-all hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-trash-2"
+                      >
+                        <path d="M3 6h18"></path>
+                        <path
+                          d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                          class=""
+                        ></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" x2="10" y1="11" y2="17" class=""></line>
+                        <line x1="14" x2="14" y1="11" y2="17"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quiz Card 2: Draft -->
+              <div
+                class="glass-card-hover glass-panel rounded-2xl p-0 relative overflow-hidden group opacity-80 hover:opacity-100"
+              >
+                <div
+                  class="absolute left-0 top-0 bottom-0 w-1.5 bg-slate-300"
+                ></div>
+                <div
+                  class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-6"
+                >
+                  <div class="flex-1 pl-2">
+                    <div class="flex items-center gap-3 mb-2">
+                      <h3 class="text-xl font-bold font-heading text-slate-800">
+                        Geometry Basics
+                      </h3>
+                      <span
+                        class="px-2.5 py-1 rounded-md text-slate-500 text-[10px] font-extrabold uppercase tracking-wide border bg-slate-100 border-slate-200"
+                      >
+                        Draft
+                      </span>
+                    </div>
+                    <p class="text-sm font-medium text-slate-500 mb-5">
+                      Shape identification and basic properties.
+                    </p>
+                    <div
+                      class="flex items-center gap-4 text-xs font-bold text-slate-500"
+                    >
+                      <span class="flex items-center gap-1.5">
+                        <svg
+                          class="text-slate-400"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                          <path d="M12 17h.01"></path>
+                        </svg>
+                        8 Questions
+                      </span>
+                      <span
+                        class="flex items-center gap-1.5 italic text-slate-400"
+                      >
+                        No due date set
+                      </span>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 gap-x-3 gap-y-3 items-center">
+                    <button
+                      class="hover:shadow-md transition-all hover:text-indigo-600 hover:border-indigo-200 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                      onclick="window.location.href = 'educator-editquiz.html'"
+                      role="button"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-pencil"
+                      >
+                        <path
+                          d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                          class=""
+                        ></path>
+                        <path d="m15 5 4 4"></path>
+                      </svg>
+                    </button>
+                    <button
+                      class="transition-all hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-trash-2"
+                      >
+                        <path d="M3 6h18" class=""></path>
+                        <path
+                          d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                          class=""
+                        ></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" x2="10" y1="11" y2="17"></line>
+                        <line x1="14" x2="14" y1="11" y2="17"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. CHALLENGES SECTION -->
+          <section class="animate-enter delay-300">
+            <div class="flex mb-6 items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-lg bg-amber-100 text-amber-600">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-trophy"
+                  >
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M10 14.66V17"></path>
+                    <path d="M14 14.66V17"></path>
+                    <path
+                      d="M18 2h-3a5 5 0 0 0-5 5v2.4a6 6 0 0 0 5.5 5.6 12.5 12.5 0 0 1-5.5 4.04A12.5 12.5 0 0 1 3.5 15a6 6 0 0 0 5.5-5.6V7a5 5 0 0 0-5-5H2"
+                    ></path>
+                  </svg>
+                </div>
+                <h2 class="text-2xl font-heading font-bold text-slate-800">
+                  Challenges
+                </h2>
+              </div>
+
+              <button
+                class="flex transition-all hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 hover:shadow-sm group text-xs font-bold text-slate-600 bg-white border-slate-200 border rounded-xl pt-2 pr-4 pb-2 pl-4 gap-x-2 gap-y-2 items-center"
+                onclick="
+                  window.location.href = 'educator-createchalllenge.html'
+                "
+                role="button"
+              >
+                Create New Challenge
+              </button>
+            </div>
+
+            <!-- Modern Tabs -->
+            <div
+              class="inline-flex p-1 rounded-xl mb-6 border bg-slate-200/50 border-white/50"
+            >
+              <button
+                class="px-4 py-1.5 rounded-lg font-bold text-xs shadow-sm bg-white text-slate-800"
+              >
+                All
+              </button>
+              <button
+                class="px-4 py-1.5 rounded-lg text-slate-500 font-bold text-xs transition-all hover:text-slate-700"
+              >
+                Daily
+              </button>
+              <button
+                class="px-4 py-1.5 rounded-lg text-slate-500 font-bold text-xs transition-all hover:text-slate-700"
+              >
+                Weekly
+              </button>
+              <button
+                class="px-4 py-1.5 rounded-lg text-slate-500 font-bold text-xs transition-all hover:text-slate-700"
+              >
+                Monthly
+              </button>
+            </div>
+
+            <div class="space-y-5">
+              <!-- Challenge Card 1: Weekly -->
+              <div
+                class="glass-card-hover glass-panel rounded-2xl p-6 relative overflow-hidden group"
+              >
+                <!-- Decorative background sheen -->
+                <div
+                  class="absolute inset-0 bg-gradient-to-r via-transparent to-transparent opacity-50 from-amber-50/50"
+                ></div>
+
+                <div
+                  class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10"
+                >
+                  <div class="flex items-start gap-4 flex-1">
+                    <div
+                      class="w-12 h-12 rounded-2xl bg-gradient-to-br flex items-center justify-center border shadow-inner group-hover:scale-110 transition-transform duration-300 from-amber-100 to-orange-100 text-amber-600 border-amber-200"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-crown"
+                      >
+                        <path
+                          d="m2 4 3 12h14l3-12-6 7-4-3-4 3-6-7zm0 0v16h20V4"
+                        ></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <h3
+                          class="text-lg font-bold font-heading text-slate-800"
+                        >
+                          Math Marathon
+                        </h3>
+                        <span
+                          class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-amber-100 text-amber-700"
+                        >
+                          Weekly
+                        </span>
+                      </div>
+                      <div
+                        class="flex items-center gap-3 text-xs font-semibold text-slate-500 mb-3"
+                      >
+                        <span
+                          class="flex items-center gap-1 px-2 py-0.5 rounded border text-indigo-600 bg-indigo-50 border-indigo-100"
+                        >
+                          <svg
+                            class="w-3 h-3"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                          >
+                            <polygon
+                              points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                            ></polygon>
+                          </svg>
+                          500 XP
+                        </span>
+                        <span
+                          class="flex items-center gap-1 px-2 py-0.5 rounded border text-amber-600 bg-amber-50 border-amber-100"
+                        >
+                          <svg
+                            class="w-3 h-3"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                          >
+                            <circle cx="8" cy="8" r="6"></circle>
+                            <path d="M18.09 10.37A6 6 0 1 1 10.34 18"></path>
+                            <path d="M7 6h1v4"></path>
+                            <path d="m16.71 13.88.7 .71-2.82 2.82"></path>
+                          </svg>
+                          50 Coins
+                        </span>
+                      </div>
+                      <div
+                        class="w-full rounded-full h-1.5 w-32 overflow-hidden bg-slate-100"
+                      >
+                        <div
+                          class="h-1.5 rounded-full bg-amber-400"
+                          style="width: 60%"
+                        ></div>
+                      </div>
+                      <p class="text-[10px] font-bold mt-1 text-slate-400">
+                        14/24 Students Completed
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 gap-x-3 gap-y-3 items-center">
+                    <button
+                      class="hover:shadow-md transition-all hover:text-indigo-600 hover:border-indigo-200 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                      onclick="
+                        window.location.href = 'educator-editchallenge.html'
+                      "
+                      role="button"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-pencil"
+                      >
+                        <path
+                          d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                          class=""
+                        ></path>
+                        <path d="m15 5 4 4" class=""></path>
+                      </svg>
+                    </button>
+                    <button
+                      class="transition-all hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-trash-2"
+                      >
+                        <path d="M3 6h18" class=""></path>
+                        <path
+                          d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                          class=""
+                        ></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" x2="10" y1="11" y2="17"></line>
+                        <line x1="14" x2="14" y1="11" y2="17"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Challenge Card 2: Daily -->
+              <div
+                class="glass-card-hover glass-panel rounded-2xl p-6 relative overflow-hidden group"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-r via-transparent to-transparent opacity-50 from-sky-50/50"
+                ></div>
+                <div
+                  class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10"
+                >
+                  <div class="flex items-start gap-4 flex-1">
+                    <div
+                      class="w-12 h-12 rounded-2xl bg-gradient-to-br flex items-center justify-center border shadow-inner group-hover:scale-110 transition-transform duration-300 from-sky-100 to-blue-100 text-sky-600 border-sky-200"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-timer"
+                      >
+                        <line x1="10" x2="14" y1="2" y2="2"></line>
+                        <line x1="12" x2="15" y1="14" y2="11"></line>
+                        <circle cx="12" cy="14" r="8"></circle>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <h3
+                          class="text-lg font-bold font-heading text-slate-800"
+                        >
+                          Mental Math Sprint
+                        </h3>
+                        <span
+                          class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-sky-100 text-sky-700"
+                        >
+                          Daily
+                        </span>
+                      </div>
+                      <div
+                        class="flex items-center gap-3 text-xs font-semibold text-slate-500 mb-3"
+                      >
+                        <span
+                          class="flex items-center gap-1 px-2 py-0.5 rounded border text-indigo-600 bg-indigo-50 border-indigo-100"
+                        >
+                          <svg
+                            class="w-3 h-3"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                          >
+                            <polygon
+                              points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                            ></polygon>
+                          </svg>
+                          100 XP
+                        </span>
+                      </div>
+                      <div
+                        class="w-full rounded-full h-1.5 w-32 overflow-hidden bg-slate-100"
+                      >
+                        <div
+                          class="h-1.5 rounded-full bg-sky-400"
+                          style="width: 85%"
+                        ></div>
+                      </div>
+                      <p class="text-[10px] font-bold mt-1 text-slate-400">
+                        20/24 Students Completed
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 gap-x-3 gap-y-3 items-center">
+                    <button
+                      class="hover:shadow-md transition-all hover:text-indigo-600 hover:border-indigo-200 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                      onclick="window.location.href = 'educator-editquiz.html'"
+                      role="button"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-pencil"
+                      >
+                        <path
+                          d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+                          class=""
+                        ></path>
+                        <path d="m15 5 4 4"></path>
+                      </svg>
+                    </button>
+                    <button
+                      class="transition-all hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 text-slate-400 bg-white border-slate-200 border rounded-xl pt-2.5 pr-2.5 pb-2.5 pl-2.5"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-trash-2"
+                      >
+                        <path d="M3 6h18" class=""></path>
+                        <path
+                          d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                          class=""
+                        ></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" x2="10" y1="11" y2="17"></line>
+                        <line x1="14" x2="14" y1="11" y2="17"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- RIGHT COLUMN (Control Tower) -->
+        <div class="lg:col-span-1 space-y-8 animate-enter delay-300">
+          <!-- 7. QUICK ACTIONS TILES -->
+          <div class="glass-panel rounded-3xl p-6 relative overflow-hidden">
+            <div
+              class="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50 bg-indigo-100"
+            ></div>
+            <h3
+              class="uppercase z-10 flex items-center gap-2 text-xs font-extrabold text-slate-400 tracking-widest mb-4 relative"
+              style=""
+            >
+              <svg
+                class="w-3 h-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" x2="12" y1="8" y2="12"></line>
+                <line x1="12" x2="12.01" y1="16" y2="16"></line>
+              </svg>
+              Quick Panel
+            </h3>
+            <div class="grid grid-cols-2 gap-3 relative z-10">
+              <!-- Tile 1 -->
+              <button
+                class="flex flex-col hover:shadow-lg hover:shadow-indigo-500/10 transition-all group hover:bg-white hover:border-indigo-100 bg-white/50 border-white/60 border rounded-2xl pt-4 pr-4 pb-4 pl-4 gap-x-2 gap-y-2 items-center justify-center"
+                onclick="window.location.href = 'educator-createquiz.html'"
+                role="button"
+              >
+                <div
+                  class="w-10 h-10 rounded-full text-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform bg-indigo-50"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-plus"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5v14" class=""></path>
+                  </svg>
+                </div>
+                <span class="text-[11px] font-bold text-slate-600">
+                  New Quiz
+                </span>
+              </button>
+              <!-- Tile 2 -->
+
+              <!-- Tile 3 -->
+              <button
+                class="flex flex-col hover:shadow-lg hover:shadow-slate-500/10 transition-all group hover:bg-white hover:border-slate-200 cursor-pointer bg-white/50 border-white/60 border rounded-2xl pt-4 pr-4 pb-4 pl-4 gap-x-2 gap-y-2 items-center justify-center"
+                onclick="window.location.href = 'educator-leaderboard.html'"
+                role="button"
+              >
+                <div
+                  class="flex group-hover:scale-110 transition-transform bg-amber-50 w-10 h-10 rounded-full items-center justify-center"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-medal w-[20px] h-[20px]"
+                    style="width: 20px; height: 20px; color: rgb(245, 158, 11)"
+                    data-icon-replaced="true"
+                  >
+                    <path
+                      d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"
+                      class=""
+                    ></path>
+                    <path d="M11 12 5.12 2.2" class=""></path>
+                    <path d="m13 12 5.88-9.8"></path>
+                    <path d="M8 7h8" class=""></path>
+                    <circle cx="12" cy="17" r="5" class=""></circle>
+                    <path d="M12 18v-2h-.5" class=""></path>
+                  </svg>
+                </div>
+                <span class="text-[11px] font-bold text-slate-600">
+                  Leaderboard
+                </span>
+              </button>
+              <!-- Tile 4 -->
+            </div>
+          </div>
+          <div class="glass-panel rounded-3xl p-6 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-2">
+              <h3
+                class="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-slate-400"
+              >
+                Pending Students
+                <span
+                  class="flex items-center justify-center h-5 min-w-[1.25rem] px-1 rounded-md bg-rose-100 text-[10px] text-rose-600 font-bold"
+                >
+                  3
+                </span>
+              </h3>
+              <button
+                class="text-[10px] font-bold text-indigo-600 hover:text-indigo-700 hover:underline transition-all"
+              >
+                Approve All
+              </button>
+            </div>
+            <p class="text-[11px] font-semibold text-slate-400/80 mb-5">
+              Students waiting to join this class.
+            </p>
+
+            <div class="space-y-3">
+              <!-- Student 1 -->
+              <div
+                class="group flex items-center justify-between p-2 pr-2.5 rounded-2xl border bg-white/40 border-white/60 hover:bg-white hover:shadow-sm hover:border-indigo-100 transition-all"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-9 h-9 rounded-full bg-indigo-50 p-0.5 border border-indigo-100"
+                  >
+                    <img
+                      src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix"
+                      class="w-full h-full rounded-full object-cover"
+                      alt="Felix"
+                    />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-bold text-slate-700">
+                      Felix Chen
+                    </span>
+                    <span class="text-[10px] font-semibold text-slate-400">
+                      2h ago
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity"
+                >
+                  <button
+                    class="p-1.5 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                    title="Reject"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-x"
+                    >
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </button>
+                  <button
+                    class="p-1.5 rounded-xl text-emerald-500 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-600 transition-colors"
+                    title="Approve"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-check"
+                    >
+                      <path d="M20 6 9 17l-5-5"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 2 -->
+              <div
+                class="group flex items-center justify-between p-2 pr-2.5 rounded-2xl border bg-white/40 border-white/60 hover:bg-white hover:shadow-sm hover:border-indigo-100 transition-all"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-9 h-9 rounded-full bg-indigo-50 p-0.5 border border-indigo-100"
+                  >
+                    <img
+                      src="https://api.dicebear.com/7.x/notionists/svg?seed=Maya"
+                      class="w-full h-full rounded-full object-cover"
+                      alt="Maya"
+                    />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-bold text-slate-700">
+                      Maya P.
+                    </span>
+                    <span class="text-[10px] font-semibold text-slate-400">
+                      4h ago
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity"
+                >
+                  <button
+                    class="p-1.5 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                    title="Reject"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-x"
+                    >
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </button>
+                  <button
+                    class="p-1.5 rounded-xl text-emerald-500 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-600 transition-colors"
+                    title="Approve"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-check"
+                    >
+                      <path d="M20 6 9 17l-5-5"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 3 -->
+              <div
+                class="group flex items-center justify-between p-2 pr-2.5 rounded-2xl border bg-white/40 border-white/60 hover:bg-white hover:shadow-sm hover:border-indigo-100 transition-all"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-9 h-9 rounded-full bg-indigo-50 p-0.5 border border-indigo-100"
+                  >
+                    <img
+                      src="https://api.dicebear.com/7.x/notionists/svg?seed=Oliver"
+                      class="w-full h-full rounded-full object-cover"
+                      alt="Oliver"
+                    />
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-bold text-slate-700">
+                      Oliver S.
+                    </span>
+                    <span class="text-[10px] font-semibold text-slate-400">
+                      1d ago
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity"
+                >
+                  <button
+                    class="p-1.5 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                    title="Reject"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-x"
+                    >
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </button>
+                  <button
+                    class="p-1.5 rounded-xl text-emerald-500 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-600 transition-colors"
+                    title="Approve"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-check"
+                    >
+                      <path d="M20 6 9 17l-5-5"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. ENGAGEMENT HEALTH (CONTROL TOWER) -->
+
+          <!-- 9. ACTIVITY STREAM -->
+          <div
+            class="glass-panel overflow-hidden rounded-3xl pt-6 pr-6 pb-6 pl-6 relative"
+          >
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-5 relative z-10">
+              <h3
+                class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-share-2"
+                >
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line>
+                  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line>
+                </svg>
+                Invite Students
+              </h3>
+              <div
+                class="flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-50/50 border border-emerald-100"
+              >
+                <span class="relative flex h-1.5 w-1.5">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-400"
+                  ></span>
+                  <span
+                    class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"
+                  ></span>
+                </span>
+                <span
+                  class="text-[10px] font-semibold text-emerald-600 tracking-wide"
+                  >Link Active</span
+                >
+              </div>
+            </div>
+
+            <div class="relative z-10 space-y-5">
+              <!-- Description -->
+              <p class="text-xs font-medium text-slate-500 leading-relaxed">
+                Share this magic link with your students for instant access to
+                <span class="font-semibold text-slate-700">Class 3A</span>.
+              </p>
+
+              <!-- Input Area -->
+              <div class="group relative">
+                <div
+                  class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-xl blur opacity-10 group-hover:opacity-30 transition duration-500"
+                ></div>
+                <div
+                  class="relative flex items-center bg-white rounded-xl border border-slate-200 shadow-sm p-1 pr-1.5"
+                >
+                  <div
+                    class="flex-1 flex items-center px-3 gap-2.5 overflow-hidden h-9"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-link text-slate-400 flex-shrink-0"
+                    >
+                      <path
+                        d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                      ></path>
+                      <path
+                        d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                      ></path>
+                    </svg>
+                    <div
+                      class="truncate text-xs font-semibold text-slate-600 font-mono tracking-tight"
+                    >
+                      edu.quest/join/<span class="text-indigo-600 font-bold"
+                        >x4j7k2</span
+                      >
+                    </div>
+                  </div>
+                  <button
+                    class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200 hover:border-indigo-200 rounded-lg transition-all text-[11px] font-bold shadow-sm group/btn active:scale-95"
+                  >
+                    <span>Copy</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-copy group-hover/btn:scale-110 transition-transform"
+                    >
+                      <rect
+                        width="14"
+                        height="14"
+                        x="8"
+                        y="8"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                      <path
+                        d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Footer Actions -->
+              <div
+                class="flex items-center justify-between border-t border-slate-100 pt-3 mt-1"
+              >
+                <button
+                  class="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 hover:text-slate-600 transition-colors group"
+                >
+                  <div
+                    class="p-1 rounded-md bg-slate-100 group-hover:bg-slate-200 transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-qr-code"
+                    >
+                      <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+                      <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+                      <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+                      <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+                      <path d="M21 21v.01"></path>
+                      <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+                      <path d="M3 12h.01"></path>
+                      <path d="M12 3h.01"></path>
+                      <path d="M12 16v.01"></path>
+                      <path d="M16 12h1"></path>
+                      <path d="M21 12v.01"></path>
+                      <path d="M12 21v-1"></path>
+                    </svg>
+                  </div>
+                  QR Code
+                </button>
+                <button
+                  class="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 hover:text-rose-500 transition-colors group"
+                >
+                  <span
+                    class="group-hover:underline decoration-rose-200 underline-offset-2"
+                    >Revoke Link</span
+                  >
+                </button>
+              </div>
+            </div>
+
+            <!-- Ambient BG -->
+            <div
+              class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"
+            ></div>
+            <div
+              class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER (Maintained) -->
+    <footer
+      class="py-12 border-t mt-20 relative z-10 bg-slate-900 text-slate-300 border-slate-800"
+    >
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2">
+              <div
+                class="w-8 h-8 rounded-lg flex items-center justify-center bg-indigo-600 text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-compass w-5 h-5"
+                >
+                  <path
+                    d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"
+                  ></path>
+                  <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+              </div>
+              <span class="text-lg font-bold tracking-tight text-white">
+                EduQuest
+              </span>
+            </div>
+            <p
+              class="text-xs leading-relaxed font-medium max-w-xs text-slate-400"
+            >
+              Making learning an addictive adventure for students around the
+              world.
+            </p>
+          </div>
+          <div class="">
+            <h4 class="font-bold mb-4 text-sm text-white">Product</h4>
+            <ul class="space-y-2 text-xs font-medium text-slate-400">
+              <li class="">
+                <a href="#" class="transition-colors hover:text-indigo-400">
+                  Features
+                </a>
+              </li>
+              <li>
+                <a href="#" class="transition-colors hover:text-indigo-400">
+                  Pricing
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4 text-sm text-white">Resources</h4>
+            <ul class="space-y-2 text-xs font-medium text-slate-400">
+              <li>
+                <a href="#" class="transition-colors hover:text-indigo-400">
+                  Help Center
+                </a>
+              </li>
+              <li>
+                <a href="#" class="transition-colors hover:text-indigo-400">
+                  Community
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4 text-sm text-white">Legal</h4>
+            <ul class="space-y-2 text-xs font-medium text-slate-400">
+              <li>
+                <a href="#" class="transition-colors hover:text-indigo-400">
+                  Privacy
+                </a>
+              </li>
+              <li>
+                <a href="#" class="transition-colors hover:text-indigo-400">
+                  Terms
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t pt-6 flex justify-center border-slate-800">
+          <p class="text-xs font-medium text-slate-500">
+            © 2024 EduQuest. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
